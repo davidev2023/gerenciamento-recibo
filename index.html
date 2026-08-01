@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Auditoria - Gestão de Recibos</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="painel-wrapper animate-fade-in">
+        <header class="painel-header">
+            <div class="header-titles">
+                <h2>🛡️ Painel de Auditoria e Recibos</h2>
+                <p>Monitoramento de envios, assinaturas e histórico de comportamento de geolocalização</p>
+            </div>
+            <div class="header-stats">
+                <!-- Botão de Instalação PWA -->
+                <button id="btnInstalar" class="btn-instalar" style="display: none;">
+                    📱 Instalar App
+                </button>
+                <div class="stat-card">
+                    <span id="totalRegistros" class="stat-number">0</span>
+                    <span class="stat-label">Registros Totais</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <input type="text" id="filtroBusca" placeholder="Pesquisar por nome ou CPF...">
+            </div>
+            <button id="btnAtualizar" class="btn-secundario">🔄 Atualizar Lista</button>
+        </div>
+
+        <!-- Área onde os cards de recibos serão injetados -->
+        <div id="listaRecibos" class="grid-recibos">
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Conectando ao banco de dados e buscando recibos...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para visualização em tamanho ampliado das imagens -->
+    <div id="modalVisualizacao" class="modal-overlay" style="display: none;">
+        <div class="modal-content animate-scale-up">
+            <button type="button" id="btnFecharModal" class="btn-fechar">✕</button>
+            <h3 id="modalTitulo">Visualização de Documento</h3>
+            <div class="modal-img-container">
+                <img id="modalImagemAmpliada" src="" alt="Documento Ampliado">
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
