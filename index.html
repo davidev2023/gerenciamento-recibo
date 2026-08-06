@@ -6,6 +6,8 @@
     <title>Painel de Auditoria - Gestão de Recibos</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,9 +15,13 @@
         <header class="painel-header">
             <div class="header-titles">
                 <h2>🛡️ Painel de Auditoria e Recibos</h2>
-                <p>Monitoramento de envios, assinaturas e histórico de comportamento de geolocalização</p>
+                <p>Monitoramento avançado de envios, assinaturas e geolocalização por satélite</p>
             </div>
             <div class="header-stats">
+                <!-- Botão Mapa Geral -->
+                <button id="btnMapaGeral" class="btn-mapa-geral">
+                    🌎 Ver Localização de Todos os Clientes
+                </button>
                 <!-- Botão de Instalação PWA -->
                 <button id="btnInstalar" class="btn-instalar" style="display: none;">
                     📱 Instalar App
@@ -43,6 +49,75 @@
         </div>
     </div>
 
+    <!-- MODAL DE DETALHES DO RECIBO COM MAPA INDIVIDUAL -->
+    <div id="modalDetalhes" class="modal-overlay" style="display: none;">
+        <div class="modal-content modal-detalhes-content animate-scale-up">
+            <button type="button" id="btnFecharModalDetalhes" class="btn-fechar">✕</button>
+            <h3 id="modalDetalhesTitulo">📋 Detalhes da Auditoria do Recibo</h3>
+            <div class="modal-detalhes-body">
+                <div class="detalhes-info-col">
+                    <div class="info-section">
+                        <h4>👤 Dados do Cliente</h4>
+                        <p><strong>Nome Completo:</strong> <span id="detalheNome">-</span></p>
+                        <p><strong>CPF:</strong> <span id="detalheCpf">-</span></p>
+                        <p><strong>Valor do Recibo:</strong> R$ <span id="detalheValor">-</span></p>
+                        <p><strong>Data/Hora do Envio:</strong> <span id="detalheDataHora">-</span></p>
+                    </div>
+                    
+                    <div class="info-section gps-highlight-box">
+                        <h4>📍 Localização Capturada (GPS)</h4>
+                        <p><strong>Latitude:</strong> <span id="detalheLat">-</span></p>
+                        <p><strong>Longitude:</strong> <span id="detalheLon">-</span></p>
+                        <p><strong>Precisão:</strong> <span id="detalhePrecisao">-</span> metros</p>
+                        <p><strong>Tempo Buscando:</strong> <span id="detalheTempo">-</span> segundos</p>
+                        <p><strong>Leituras GPS:</strong> <span id="detalheLeituras">-</span> leituras</p>
+                        <p><strong>Status GPS:</strong> <span id="detalheStatusGPS">-</span></p>
+                        
+                        <!-- BOTÃO PARA ABRIR NO GOOGLE MAPS -->
+                        <a id="btnAbrirGoogleMaps" href="#" target="_blank" class="btn-google-maps" style="display: none;">
+                            🗺️ Abrir no Google Maps do Celular
+                        </a>
+
+                        <!-- BOTÃO DE EXCLUIR RECIBO E IMAGENS -->
+                        <button id="btnExcluirRecibo" class="btn-excluir-recibo">
+                            🗑️ Excluir Recibo e Imagens
+                        </button>
+                    </div>
+
+                    <div class="info-section">
+                        <h4>📜 Histórico de Comportamento</h4>
+                        <p id="detalheHistorico" class="historico-texto">-</p>
+                    </div>
+                </div>
+
+                <div class="detalhes-mapa-col">
+                    <h4>🗺️ Localização Exata no Mapa</h4>
+                    <div id="mapaIndividual" class="mapa-container"></div>
+                    
+                    <div class="detalhes-imagens-preview">
+                        <div class="thumb-box">
+                            <span>Fachada</span>
+                            <img id="imgFachadaDetalhe" src="" alt="Fachada" class="thumbnail-detalhe">
+                        </div>
+                        <div class="thumb-box">
+                            <span>Assinatura</span>
+                            <img id="imgAssinaturaDetalhe" src="" alt="Assinatura" class="thumbnail-detalhe">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DO MAPA GERAL DE TODOS OS CLIENTES -->
+    <div id="modalMapaGeral" class="modal-overlay" style="display: none;">
+        <div class="modal-content modal-mapa-geral-content animate-scale-up">
+            <button type="button" id="btnFecharModalMapaGeral" class="btn-fechar">✕</button>
+            <h3>🌎 Mapa Geral de Clientes (Geolocalização de Auditoria)</h3>
+            <div id="mapaGeral" class="mapa-geral-container"></div>
+        </div>
+    </div>
+
     <!-- Modal para visualização em tamanho ampliado das imagens -->
     <div id="modalVisualizacao" class="modal-overlay" style="display: none;">
         <div class="modal-content animate-scale-up">
@@ -54,6 +129,8 @@
         </div>
     </div>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script type="module" src="app.js"></script>
 </body>
 </html>
